@@ -38,9 +38,9 @@ form.addEventListener('submit', async event => {
     }
 
     createGallery(data.hits);
-    if (page * 15 > data.totalHits) {
+    if (page * 15 >= data.totalHits) {
       hideLoadMoreButton();
-      iziToast.error({
+      iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
       });
     } else {
@@ -48,19 +48,30 @@ form.addEventListener('submit', async event => {
     }
     page++;
   } catch (error) {
-    console.log(error);
+    iziToast.error({
+      message: 'Something went wrong. Please try again.',
+    });
   } finally {
     hideLoader();
   }
 });
 
 loadMoreButton.addEventListener('click', async () => {
+  hideLoadMoreButton();
   showLoader();
   try {
+    page++;
     const data = await getImagesByQuery(currentQuery, page);
+    if (data.hits.length === 0) {
+      hideLoadMoreButton();
+      iziToast.error({
+        message: 'Something went wrong. Please try again.',
+      });
+      return;
+    }
     createGallery(data.hits);
     const image = document.querySelector('.gallery-item');
-    const imageHeight = card.getBoundingClientRect().height;
+    const imageHeight = image.getBoundingClientRect().height;
 
     window.scrollBy({
       top: imageHeight * 2,
@@ -71,10 +82,13 @@ loadMoreButton.addEventListener('click', async () => {
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
       });
+    } else {
+      showLoadMoreButton();
     }
-    page++;
   } catch (error) {
-    console.log(error);
+    iziToast.error({
+      message: 'Something went wrong. Please try again.',
+    });
   } finally {
     hideLoader();
   }
