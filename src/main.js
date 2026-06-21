@@ -38,8 +38,8 @@ form.addEventListener('submit', async event => {
     }
 
     createGallery(data.hits);
-    page++;
-    if (page * 15 >= data.totalHits) {
+    const loadItem = page * 15;
+    if (loadItem >= data.totalHits) {
       hideLoadMoreButton();
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
@@ -47,6 +47,7 @@ form.addEventListener('submit', async event => {
     } else {
       showLoadMoreButton();
     }
+    page++;
   } catch (error) {
     iziToast.error({
       message: 'Something went wrong. Please try again.',
@@ -69,7 +70,7 @@ loadMoreButton.addEventListener('click', async () => {
       return;
     }
     createGallery(data.hits);
-    page++;
+    const loadItem = page * 15;
     const image = document.querySelector('.gallery-item');
     const imageHeight = image.getBoundingClientRect().height;
 
@@ -77,7 +78,7 @@ loadMoreButton.addEventListener('click', async () => {
       top: imageHeight * 2,
       behavior: 'smooth',
     });
-    if (page * 15 >= data.totalHits) {
+    if (loadItem >= data.totalHits) {
       hideLoadMoreButton();
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
@@ -85,6 +86,7 @@ loadMoreButton.addEventListener('click', async () => {
     } else {
       showLoadMoreButton();
     }
+    page++;
   } catch (error) {
     iziToast.error({
       message: 'Something went wrong. Please try again.',
