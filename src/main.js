@@ -38,7 +38,7 @@ form.addEventListener('submit', async event => {
     }
 
     createGallery(data.hits);
-    const loadedItems = document.querySelectorAll('.gallery-item').length;
+    const loadItem = document.querySelectorAll('.gallery-item').length;
     if (loadItem >= data.totalHits) {
       hideLoadMoreButton();
       iziToast.info({
@@ -70,7 +70,7 @@ loadMoreButton.addEventListener('click', async () => {
       return;
     }
     createGallery(data.hits);
-    const loadedItems = document.querySelectorAll('.gallery-item').length;
+    const loadItem = document.querySelectorAll('.gallery-item').length;
     const image = document.querySelector('.gallery-item');
     const imageHeight = image.getBoundingClientRect().height;
 
