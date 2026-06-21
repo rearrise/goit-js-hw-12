@@ -38,6 +38,7 @@ form.addEventListener('submit', async event => {
     }
 
     createGallery(data.hits);
+    page++;
     if (page * 15 >= data.totalHits) {
       hideLoadMoreButton();
       iziToast.info({
@@ -46,7 +47,6 @@ form.addEventListener('submit', async event => {
     } else {
       showLoadMoreButton();
     }
-    page++;
   } catch (error) {
     iziToast.error({
       message: 'Something went wrong. Please try again.',
@@ -60,7 +60,6 @@ loadMoreButton.addEventListener('click', async () => {
   hideLoadMoreButton();
   showLoader();
   try {
-    page++;
     const data = await getImagesByQuery(currentQuery, page);
     if (data.hits.length === 0) {
       hideLoadMoreButton();
@@ -70,6 +69,7 @@ loadMoreButton.addEventListener('click', async () => {
       return;
     }
     createGallery(data.hits);
+    page++;
     const image = document.querySelector('.gallery-item');
     const imageHeight = image.getBoundingClientRect().height;
 
